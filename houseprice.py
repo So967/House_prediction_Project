@@ -2,11 +2,13 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import joblib
+import os
 
 # Load the trained model
 @st.cache_resource
 def load_model():
-    return joblib.load(r"C:\Users\USER\OneDrive\Desktop\Houseprice Prediction Project\house_price_model.pkl")
+    model_path = os.path.join(os.path.dirname(__file__), "house_price_model.pkl")
+    return joblib.load(model_path)
 
 model = load_model()
 
@@ -24,3 +26,4 @@ if st.button("Predict Price"):
     input_data = pd.DataFrame([[area, bedrooms, bathrooms]], columns=['Area', 'Bedrooms', 'Bathrooms'])
     prediction = model.predict(input_data)[0]
     st.success(f"💰 Predicted Price: ₹{int(prediction):,}")
+
